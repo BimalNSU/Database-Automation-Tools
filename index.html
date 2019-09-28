@@ -111,7 +111,6 @@
 			jsonObject.script_name = $name +'.php';	//make script file_name.php as jsonObject
 			$.get(url,jsonObject,function(data){
 				toastr.info(data);
-				//console.log(data);
 			});
 			location.reload();	//Reload the current document
 			//showTableList();	//refresh table list
@@ -163,11 +162,8 @@
 		$('#showTableScript').click(function(){
 			var url = 'setup/dir.php';
 			$.get(url,'',function(data){
-			console.log("test1"+data);
 				data = data.substring(3, data.length-1);
-				console.log("test2"+data);
 				data = data.split(",");
-				console.log("test3"+data);
 				var _tr = '';
 				for(let index = 0; index < data.length ; index++)
 				{
@@ -185,7 +181,6 @@
 			var url = 'setup/database_setup.php';
 			var jsonObject = new Object();
 			jsonObject.function='getTriggersList';
-			console.log(jsonObject);
 			$.get(url,jsonObject,function(data){
 				data = JSON.parse(data);	//string to json conversion
 				var _tr = '';
