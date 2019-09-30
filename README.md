@@ -1,2 +1,2 @@
 # Database-Automation-Tools
-![Optional Text](../master/images/tools_image.png)
+![](../master/images/tools_image.png)
