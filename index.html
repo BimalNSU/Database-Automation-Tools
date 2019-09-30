@@ -14,14 +14,13 @@
 				<input type="text" id="inputID" placeholder="Enter Table Name"></input>
 				<button type="button" class="btn btn-success" id="createTable"><i class="fa fa-plus"></i></button>
 				<button class="btn btn-danger" id="deleteTable"><i class="fa fa-trash"></i></button>
-				<button class="btn" id="showTableScript">Show Unpublished Table List</button>
 			</div>
 		</div>
 		<br>
 		<div class="row mx-2">
 			<div class="col-lg-4 col-md-6">
 				<div class="card container">
-					<div class="card-header" align="center"><b>Unpublished Table List</b></div>
+					<div class="card-header" align="center"><b>Unpublished Script List</b></div>
 					<div class="card-body">
 						<table class="table table-hover">
 							<thead align="center" >
@@ -30,7 +29,7 @@
 								  <th>Trigger</th>
 								</tr>
 							  </thead>
-						  <tbody align="center" id="exist_table_scripts">
+						  <tbody align="center" id="exist_scripts">
 						  </tbody>
 						</table>
 					</div>
@@ -104,7 +103,6 @@
 	
 		function create($name, $sql_call_request)
 		{
-		//var url = 'scripts/'+ $('#inputID').val() +'.php';
 			var url = 'setup/database_setup.php';
 			var jsonObject = new Object();
 			jsonObject.function = $sql_call_request;
@@ -113,7 +111,6 @@
 				toastr.info(data);
 			});
 			location.reload();	//Reload the current document
-			//showTableList();	//refresh table list
 		}
 
 		$('#deleteTable').click(function(){
@@ -130,7 +127,6 @@
 		});
 		function deleteTnT($name,$sql_call_request)
 		{
-		//var url = 'scripts/'+ $('#inputID').val() +'.php';
 			var url = 'setup/database_setup.php';
 			var jsonObject = new Object();
 			jsonObject.name = $name;	//sent db table/trigger name
@@ -138,10 +134,9 @@
 			$.get(url,jsonObject,function(data){
 				toastr.info(data);
 			});
-			//showTableList();	//refresh table list
 		}
 		
-		//showTableList
+		//show created TableList
 		$(function(){
 			var url = 'setup/database_setup.php';
 			var jsonObject = new Object();
@@ -159,21 +154,31 @@
 				$("#created_table_list").html(_tr);	
 			});
 		});
-		$('#showTableScript').click(function(){
+		//show unpublished table & trigger script list
+		$(function(){
 			var url = 'setup/dir.php';
 			$.get(url,'',function(data){
-				data = data.substring(3, data.length-1);
-				data = data.split(",");
+				data = JSON.parse(data);	// convert string to json object
 				var _tr = '';
-				for(let index = 0; index < data.length ; index++)
+				for(let index = 0; index < data.unpublished_table.length ||  index < data.unpublished_trigger.length ; index++)
 				{
 					_tr += '<tr>';
-					_tr += '<td>' + data[index]+ '</td>';
+					if(data.unpublished_table[index] == 'undefined'){
+						_tr += '<td>' + "" + '</td>';
+					}
+					else{
+						_tr += '<td>' + data.unpublished_table[index]+ '</td>';
+					}
+					if(data.unpublished_trigger[index] == undefined){
+						_tr += '<td>' + "" + '</td>';
+					}
+					else{
+						_tr += '<td>' + ''+data.unpublished_trigger[index]+ '</td>';
+					}									
 					_tr += '</tr>';
 				}	
-				$("#exist_table_scripts").html(_tr);
+				$("#exist_scripts").html(_tr);
 			});
-			showTableList();	//refresh table list
 		});
 		
 		//show trigger list

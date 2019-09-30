@@ -19,7 +19,7 @@
 	// Table sql call requests
 	if($_GET['function'] == 'createTable')
 	{
-		$table_script_name = '../scripts/'.$_GET['script_name'];		//get file directory
+		$table_script_name = '../scripts/tables/'.$_GET['script_name'];		//get file directory
 		require ($table_script_name);
 		$TableSetup = new TableSetup();
 		$TableSetup->createTable($sqlQuery,$table_name);	//use variables from the file 
@@ -38,7 +38,7 @@
 	// trigger sql call requests
 	if($_GET['function'] == 'createTrigger')
 	{
-		$trigger_script_name = '../scripts/'.$_GET['script_name'];		//get file directory
+		$trigger_script_name = '../scripts/triggers/'.$_GET['script_name'];		//get file directory
 		require ($trigger_script_name);		//include file and open
 		$TriggerSetup = new TriggerSetup();
 		$TriggerSetup->createTrigger($sqlQuery,$trigger_name);	//use variables from the file 
@@ -132,6 +132,7 @@ Class TableSetup
 	public function getTableList()
 	{
 		$conn=new mysqli($GLOBALS['servername'], $GLOBALS['username'], $GLOBALS['password'], $GLOBALS['dbname']);
+		//$conn=new mysqli($servername, $username, $password, $dbname);
 		$dbname =$GLOBALS['dbname'];
 		$sql = "SELECT TABLE_NAME,TABLE_ROWS FROM information_schema.TABLES where TABLE_SCHEMA='$dbname'"; // get all tables from db 
 	  	if ($result = mysqli_query($conn, $sql)) 	//run sql
@@ -199,7 +200,8 @@ Class TriggerSetup
 	{
 		$conn=new mysqli($GLOBALS['servername'], $GLOBALS['username'], $GLOBALS['password'], $GLOBALS['dbname']);
 		$dbname =$GLOBALS['dbname'];
-		$sql = "SHOW TRIGGERS"; // get all triggers list from db 
+		// get all triggers list from db 
+		$sql = "SHOW TRIGGERS FROM $dbname"; 	
 	  	if ($result = mysqli_query($conn, $sql)) 	//run sql
 	  	{
 	  		$jsonObject= array();
