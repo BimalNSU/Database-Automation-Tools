@@ -1,2 +1,3 @@
 # Database-Automation-Tools
-![](../master/images/tools_image.png)
+
+![](images/tools_image.PNG)
